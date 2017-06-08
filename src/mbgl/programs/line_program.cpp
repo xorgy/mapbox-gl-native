@@ -13,7 +13,7 @@ using namespace style;
 static_assert(sizeof(LineLayoutVertex) == 8, "expected LineLayoutVertex size");
 
 template <class Values, class...Args>
-Values makeValues(const LinePaintProperties::PossiblyEvaluated& properties,
+Values makeValues(const RenderLinePaintProperties::PossiblyEvaluated& properties,
                   const RenderTile& tile,
                   const TransformState& state,
                   const std::array<float, 2>& pixelsToGLUnits,
@@ -32,7 +32,7 @@ Values makeValues(const LinePaintProperties::PossiblyEvaluated& properties,
 }
 
 LineProgram::UniformValues
-LineProgram::uniformValues(const LinePaintProperties::PossiblyEvaluated& properties,
+LineProgram::uniformValues(const RenderLinePaintProperties::PossiblyEvaluated& properties,
                            const RenderTile& tile,
                            const TransformState& state,
                            const std::array<float, 2>& pixelsToGLUnits) {
@@ -45,7 +45,7 @@ LineProgram::uniformValues(const LinePaintProperties::PossiblyEvaluated& propert
 }
 
 LineSDFProgram::UniformValues
-LineSDFProgram::uniformValues(const LinePaintProperties::PossiblyEvaluated& properties,
+LineSDFProgram::uniformValues(const RenderLinePaintProperties::PossiblyEvaluated& properties,
                               float pixelRatio,
                               const RenderTile& tile,
                               const TransformState& state,
@@ -82,7 +82,7 @@ LineSDFProgram::uniformValues(const LinePaintProperties::PossiblyEvaluated& prop
 }
 
 LinePatternProgram::UniformValues
-LinePatternProgram::uniformValues(const LinePaintProperties::PossiblyEvaluated& properties,
+LinePatternProgram::uniformValues(const RenderLinePaintProperties::PossiblyEvaluated& properties,
                                   const RenderTile& tile,
                                   const TransformState& state,
                                   const std::array<float, 2>& pixelsToGLUnits,

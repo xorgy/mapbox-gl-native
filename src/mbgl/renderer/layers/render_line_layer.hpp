@@ -6,6 +6,14 @@
 
 namespace mbgl {
 
+struct LineFloorwidth : style::DataDrivenPaintProperty<float, attributes::a_floorwidth> {
+    static float defaultValue() { return 1; }
+};
+
+class RenderLinePaintProperties : public style::ConcatenateProperties<
+    style::LinePaintProperties::PropertyTypes,
+    TypeList<LineFloorwidth>>::Type {};
+
 class RenderLineLayer: public RenderLayer {
 public:
     RenderLineLayer(Immutable<style::LineLayer::Impl>);
@@ -26,7 +34,7 @@ public:
 
     // Paint properties
     style::LinePaintProperties::Unevaluated unevaluated;
-    style::LinePaintProperties::PossiblyEvaluated evaluated;
+    RenderLinePaintProperties::PossiblyEvaluated evaluated;
 
     const style::LineLayer::Impl& impl() const;
 

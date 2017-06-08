@@ -280,8 +280,6 @@ void LineLayer::setLineWidth(DataDrivenPropertyValue<float> value) {
         return;
     auto impl_ = mutableImpl();
     impl_->paint.template get<LineWidth>().value = value;
-    impl_->paint.template get<LineFloorwidth>().value = value;
-    impl_->paint.template get<LineFloorwidth>().value.useIntegerZoom();
     baseImpl = std::move(impl_);
     observer->onLayerChanged(*this);
 }

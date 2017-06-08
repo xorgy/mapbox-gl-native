@@ -24,7 +24,14 @@ void RenderLineLayer::transition(const TransitionParameters& parameters) {
 }
 
 void RenderLineLayer::evaluate(const PropertyEvaluationParameters& parameters) {
-    evaluated = unevaluated.evaluate(parameters);
+    style::Properties<LineFloorwidth>::Unevaluated extra;
+    extra.get<LineFloorwidth>() = unevaluated.get<style::LineWidth>();
+
+    auto dashArrayParams = parameters;
+    dashArrayParams.z = std::floor(dashArrayParams.z);
+
+    evaluated = unevaluated.evaluate(parameters)
+        .concat(extra.evaluate(dashArrayParams));
 
     passes = (evaluated.get<style::LineOpacity>().constantOr(1.0) > 0
               && evaluated.get<style::LineColor>().constantOr(Color::black()).a > 0

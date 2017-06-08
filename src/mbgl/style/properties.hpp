@@ -214,5 +214,13 @@ public:
     };
 };
 
+template <class...>
+struct ConcatenateProperties;
+
+template <class... As, class... Bs>
+struct ConcatenateProperties<TypeList<As...>, TypeList<Bs...>> {
+    using Type = Properties<As..., Bs...>;
+};
+
 } // namespace style
 } // namespace mbgl
