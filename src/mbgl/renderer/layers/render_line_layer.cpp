@@ -28,7 +28,7 @@ void RenderLineLayer::evaluate(const PropertyEvaluationParameters& parameters) {
     extra.get<LineFloorwidth>() = unevaluated.get<style::LineWidth>();
 
     auto dashArrayParams = parameters;
-    dashArrayParams.z = std::floor(dashArrayParams.z);
+    dashArrayParams.useIntegerZoom = true;
 
     evaluated = unevaluated.evaluate(parameters)
         .concat(extra.evaluate(dashArrayParams));
