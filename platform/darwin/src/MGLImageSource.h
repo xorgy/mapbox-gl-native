@@ -37,6 +37,7 @@ MGL_EXPORT
  mapView.style?.addSource(source)
  ```
  */
+MGL_EXPORT
 @interface MGLImageSource : MGLSource
 
 #pragma mark Initializing a Source
