@@ -51,6 +51,38 @@ NS_INLINE mbgl::style::TransitionOptions MGLOptionsFromTransition(MGLTransition 
 - (instancetype)initWithMBGLLight:(const mbgl::style::Light *)mbglLight
 {
     if (self = [super init]) {
+<% if (properties.length) { -%>
+<% for (const property of properties) { -%>
+<% if (property.type == "enum") { -%>
+        auto <%- camelizeWithLeadingLowercase(property.name) -%> = mbglLight->get<%- camelize(property.name) -%>();
+        MGLStyleValue<NSValue *> *<%- camelizeWithLeadingLowercase(property.name) -%>StyleValue;
+        if (<%- camelizeWithLeadingLowercase(property.name) -%>.isUndefined()) {
+            mbgl::style::PropertyValue<mbgl::style::Light<%- camelize(property.name) -%>Type> default<%- camelize(property.name) -%> = mbglLight->getDefault<%- camelize(property.name) -%>();
+            <%- camelizeWithLeadingLowercase(property.name) -%>StyleValue = MGLStyleValueTransformer<mbgl::style::LightAnchorType, NSValue *, mbgl::style::LightAnchorType, MGLLightAnchor>().toEnumStyleValue(default<%- camelize(property.name) -%>);
+        } else {
+            <%- camelizeWithLeadingLowercase(property.name) -%>StyleValue = MGLStyleValueTransformer<mbgl::style::Light<%- camelize(property.name) -%>Type, NSValue *, mbgl::style::Light<%- camelize(property.name) -%>Type, MGLLight<%- camelize(property.name) -%>>().toEnumStyleValue(<%- camelizeWithLeadingLowercase(property.name) -%>);
+        }
+
+        _<%- camelizeWithLeadingLowercase(property.name) -%> = <%- camelizeWithLeadingLowercase(property.name) -%>StyleValue;
+        
+<% if (property.transition) { -%>
+        _<%- camelizeWithLeadingLowercase(property.name) -%>Transition = MGLTransitionFromOptions(mbglLight->get<%- camelize(property.name) -%>Transition());
+<% } -%>
+<% } else {-%>
+
+        auto <%- camelizeWithLeadingLowercase(property.name) -%>Value = mbglLight->get<%- camelize(property.name) -%>();
+        if (<%- camelizeWithLeadingLowercase(property.name) -%>Value.isUndefined()) {
+            _<%- camelizeWithLeadingLowercase(property.name) -%> = MGLStyleValueTransformer<<%- valueTransformerArguments(property).join(', ') %>>().toStyleValue(mbglLight->getDefault<%- camelize(property.name) -%>());
+        } else {
+            _<%- camelizeWithLeadingLowercase(property.name) -%> = MGLStyleValueTransformer<mbgl::style::Position, NSValue *>().toStyleValue(<%- camelizeWithLeadingLowercase(property.name) -%>Value);
+        }
+
+<% if (property.transition) { -%>        
+        _<%- camelizeWithLeadingLowercase(property.name) -%>Transiton = MGLTransitionFromOptions(mbglLight->get<%- camelize(property.name) -%>Transition());
+<% } -%>        
+<% } -%>
+<% } -%>
+<% } -%>
         auto anchor = mbglLight->getAnchor();
         MGLStyleValue<NSValue *> *anchorStyleValue;
         if (anchor.isUndefined()) {

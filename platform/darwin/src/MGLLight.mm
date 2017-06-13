@@ -51,6 +51,50 @@ NS_INLINE mbgl::style::TransitionOptions MGLOptionsFromTransition(MGLTransition 
         } else {
             anchorStyleValue = MGLStyleValueTransformer<mbgl::style::LightAnchorType, NSValue *, mbgl::style::LightAnchorType, MGLLightAnchor>().toEnumStyleValue(anchor);
         }
+
+        _anchor = anchorStyleValue;
+        
+
+        auto positionValue = mbglLight->getPosition();
+        if (positionValue.isUndefined()) {
+            _position = MGLStyleValueTransformer<mbgl::style::Position, NSValue *>().toStyleValue(mbglLight->getDefaultPosition());
+        } else {
+            _position = MGLStyleValueTransformer<mbgl::style::Position, NSValue *>().toStyleValue(positionValue);
+        }
+
+        
+        _positionTransiton = MGLTransitionFromOptions(mbglLight->getPositionTransition());
+        
+
+        auto colorValue = mbglLight->getColor();
+        if (colorValue.isUndefined()) {
+            _color = MGLStyleValueTransformer<mbgl::Color, MGLColor *>().toStyleValue(mbglLight->getDefaultColor());
+        } else {
+            _color = MGLStyleValueTransformer<mbgl::style::Position, NSValue *>().toStyleValue(colorValue);
+        }
+
+        
+        _colorTransiton = MGLTransitionFromOptions(mbglLight->getColorTransition());
+        
+
+        auto intensityValue = mbglLight->getIntensity();
+        if (intensityValue.isUndefined()) {
+            _intensity = MGLStyleValueTransformer<float, NSNumber *>().toStyleValue(mbglLight->getDefaultIntensity());
+        } else {
+            _intensity = MGLStyleValueTransformer<mbgl::style::Position, NSValue *>().toStyleValue(intensityValue);
+        }
+
+        
+        _intensityTransiton = MGLTransitionFromOptions(mbglLight->getIntensityTransition());
+        
+        auto anchor = mbglLight->getAnchor();
+        MGLStyleValue<NSValue *> *anchorStyleValue;
+        if (anchor.isUndefined()) {
+            mbgl::style::PropertyValue<mbgl::style::LightAnchorType> defaultAnchor = mbglLight->getDefaultAnchor();
+            anchorStyleValue = MGLStyleValueTransformer<mbgl::style::LightAnchorType, NSValue *, mbgl::style::LightAnchorType, MGLLightAnchor>().toEnumStyleValue(defaultAnchor);
+        } else {
+            anchorStyleValue = MGLStyleValueTransformer<mbgl::style::LightAnchorType, NSValue *, mbgl::style::LightAnchorType, MGLLightAnchor>().toEnumStyleValue(anchor);
+        }
         
         _anchor = anchorStyleValue;
         
