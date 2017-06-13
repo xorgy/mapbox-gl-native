@@ -30,8 +30,8 @@ void RenderLineLayer::evaluate(const PropertyEvaluationParameters& parameters) {
     auto dashArrayParams = parameters;
     dashArrayParams.useIntegerZoom = true;
 
-    evaluated = unevaluated.evaluate(parameters)
-        .concat(extra.evaluate(dashArrayParams));
+    evaluated = RenderLinePaintProperties::PossiblyEvaluated(
+        unevaluated.evaluate(parameters).concat(extra.evaluate(dashArrayParams)));
 
     passes = (evaluated.get<style::LineOpacity>().constantOr(1.0) > 0
               && evaluated.get<style::LineColor>().constantOr(Color::black()).a > 0
