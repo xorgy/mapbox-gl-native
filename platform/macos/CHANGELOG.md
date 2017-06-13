@@ -1,5 +1,8 @@
 # Changelog for Mapbox macOS SDK
 
+## master
+* Add support for ImageSource [#9110](https://github.com/mapbox/mapbox-gl-native/pull/9110)
+
 ## 3.6.0
 
 ### Packaging

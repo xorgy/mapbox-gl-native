@@ -2,6 +2,10 @@
 
 Mapbox welcomes participation and contributions from everyone. Please read [CONTRIBUTING.md](../../CONTRIBUTING.md) to get started.
 
+## master
+* Add support for ImageSource [#9110](https://github.com/mapbox/mapbox-gl-native/pull/9110)
+
+
 ## 3.6.0
 
 ### Packaging
