@@ -14,6 +14,7 @@ template <typename T> class ThreadedObject;
 } // namespace util
 
 template <typename T> class ActorRef;
+class Mailbox;
 
 class DefaultFileSource : public FileSource {
 public:
@@ -45,6 +46,7 @@ public:
     void setResourceTransform(std::function<std::string(Resource::Kind, std::string&&)>);
 
     std::unique_ptr<AsyncRequest> request(const Resource&, Callback) override;
+    std::unique_ptr<AsyncRequest> request(const Resource&, Callback, std::shared_ptr<Mailbox>);
 
     /*
      * Retrieve all regions in the offline database.

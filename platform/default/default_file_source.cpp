@@ -237,10 +237,14 @@ void DefaultFileSource::setResourceTransform(std::function<std::string(Resource:
 }
 
 std::unique_ptr<AsyncRequest> DefaultFileSource::request(const Resource& resource, Callback callback) {
+    return request(resource, callback, std::make_shared<Mailbox>(*util::RunLoop::Get()));
+}
+
+std::unique_ptr<AsyncRequest> DefaultFileSource::request(const Resource& resource, Callback callback, std::shared_ptr<Mailbox> mailbox) {
     class DefaultFileRequest : public AsyncRequest {
     public:
-        DefaultFileRequest(Resource resource_, FileSource::Callback callback_, ActorRef<DefaultFileSource::Impl> fs_)
-            : mailbox(std::make_shared<Mailbox>(*util::RunLoop::Get()))
+        DefaultFileRequest(Resource resource_, FileSource::Callback callback_, ActorRef<DefaultFileSource::Impl> fs_, std::shared_ptr<Mailbox> mailbox_)
+            : mailbox(mailbox_)
             , fs(fs_) {
             fs.invoke(&DefaultFileSource::Impl::request, this, resource_, [callback_, ref = ActorRef<DefaultFileRequest>(*this, mailbox)](Response res) mutable {
                 ref.invoke(&DefaultFileRequest::runCallback, callback_, res);
@@ -260,7 +264,7 @@ std::unique_ptr<AsyncRequest> DefaultFileSource::request(const Resource& resourc
         ActorRef<DefaultFileSource::Impl> fs;
     };
 
-    return std::make_unique<DefaultFileRequest>(resource, callback, *thread);
+    return std::make_unique<DefaultFileRequest>(resource, callback, *thread, mailbox);
 }
 
 void DefaultFileSource::listOfflineRegions(std::function<void (std::exception_ptr, optional<std::vector<OfflineRegion>>)> callback) {
